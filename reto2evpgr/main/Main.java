@@ -1,13 +1,17 @@
 package main;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import clases.Cargo;
+import clases.Cliente;
 import clases.DNIException;
 import clases.Empleado;
+import clases.Reserva;
+import recursos.Util;
 
 public class Main {
 	public static void main(String[] args) {
@@ -61,11 +65,37 @@ public class Main {
 		} while (true);
 	}
 	
-	public void altaCliente(){
+	private static void altaCliente(ArrayList<Cliente> clientes) {
+		String nombre,apellido,dni;
+		int telefono,contador=0;
+		do {
+		System.out.println("Dame el dni del cliente");
+		dni=Util.introducirCadena();
+		 if (!dni.matches("\\d{8}[A-Za-z]")) {
+			 contador++;
+			 System.out.println("Formato de dni incorrecto, intentalo de nuevo");
+		 }
+		}while(!dni.matches("\\d{8}[A-Za-z]"));
 		
+		System.out.println("Dame el nombre del cliente");
+		nombre=Util.introducirCadena();
+		System.out.println("Dame el apellido del cliente");
+		apellido=Util.introducirCadena();
+		System.out.println("Dame el telefono del cliente");
+		telefono=Util.leerInt();
+		Cliente c=new Cliente(dni,nombre,apellido,telefono);
+		clientes.add(c);
+		System.out.println("Cliente añadido :)");
 	}
-	public void listarClientes(){
-		
+	private static void listarClientes(ArrayList<Cliente> clientes) {
+		if (clientes.size()==0) {
+			System.out.println("No hay clientes que mostrar");	
+		}
+		else {
+			for(Cliente c : clientes) {
+			System.out.println(c.toString());
+			}
+		}
 	}
 	private static ArrayList<Empleado> empleados = new ArrayList<>();
     private static Scanner teclado = new Scanner(System.in);
@@ -106,15 +136,15 @@ public class Main {
 		        teclado.nextLine(); 
 		        
 		        if (opcionCargo == 1) {
-		            cargo = Cargo.COMERCIAL;
+		            cargo = Cargo.comercial;
 		            cargoValido = true;
 
 		        } else if (opcionCargo == 2) {
-		            cargo = Cargo.RECEPCIONISTA;
+		            cargo = Cargo.recepcionista;
 		            cargoValido = true;
 
 		        } else if (opcionCargo == 3) {
-		            cargo = Cargo.MECANICO;
+		            cargo = Cargo.mecanico;
 		            cargoValido = true;
 
 		        } else {
@@ -153,20 +183,108 @@ public class Main {
 		    }
 		
 
-		    
-		
-
-	
-	public void añadirReserva() {
-		
+		       private static void añadirReserva(ArrayList<Cliente> clientes,ArrayList<Reserva> reservas) {
+				if (clientes.size()==0) {
+					System.out.println("No hay clientes a los que añadirles reservas");	
+				}
+				else {
+				String dniCliente,modeloVehiculo;
+				int contador=0;
+				LocalDate fechaInicio;
+				int dias;
+				int numeroReserva=0;
+				do {
+					System.out.println("Dame el dni del cliente");
+					dniCliente=Util.introducirCadena();
+					 if (!dniCliente.matches("\\d{8}[A-Za-z]")) {
+						 contador++;
+						 System.out.println("Formato de dni incorrecto, intentalo de nuevo");
+					 }
+					}while(!dniCliente.matches("\\d{8}[A-Za-z]"));
+				for(Cliente c : clientes) {
+					if(dniCliente.equalsIgnoreCase(c.getDni())) {
+						System.out.println("Que modelo desea alquilar?");
+						modeloVehiculo=Util.introducirCadena();
+						System.out.println("Cuando quiere empezar la reserva formato(YYYY-MM-DD)");
+						String textoFecha = Util.introducirCadena();
+						fechaInicio = LocalDate.parse(textoFecha);
+						System.out.println("cuantos dias quiere reservar: ");
+						int numeroReserva = Util.leerInt();
+						dias = Util.leerInt();
+						Reserva r=new Reserva(numeroReserva,dniCliente,modeloVehiculo,fechaInicio,dias);
+						c.aniadirReserva(r);
+						reservas.add(r);
+						System.out.println("Su numero de reserva es "+r.getNumeroReserva());
+					}
+				}
+				if(contador==0) {
+					System.out.println("Dni incorrecto, no se encontro el cliente");
+				}
+				}
+			}
+	private static void listarReservas(ArrayList<Reserva> reservas) {
+		if (reservas.size()==0) {
+			System.out.println("No hay reservas que mostrar");	
+		}
+		else {
+		for(Reserva r : reservas) {
+			System.out.println(r.toString());
+		}
+		}
 	}
-	public void listarReservas() {
-		
+	private static void mostrarReservasCliente(ArrayList<Cliente> clientes) {
+		if (clientes.size()==0) {
+			System.out.println("No hay clientes de los cuales mostrar reservas");	
+		}
+		else {
+		String dni;
+		int contador=0;
+		do {
+			System.out.println("Dame el dni del cliente");
+			dni=Util.introducirCadena();
+			 if (!dni.matches("\\d{8}[A-Za-z]")) {
+				 contador++;
+				 System.out.println("Formato de dni incorrecto, intentalo de nuevo");
+			 }
+			}while(!dni.matches("\\d{8}[A-Za-z]"));
+		for(Cliente c : clientes) {
+			contador++;
+			if(dni.equalsIgnoreCase(c.getDni())) {
+				c.listarReservas();
+			}
+		}
+		if(contador==0) {
+			System.out.println("Dni incorrecto, no se encontro el cliente");
+		}
+		}
 	}
-	public void mostrarReservasCliente() {
-		
-	}
-	public void anularReserva() {
-		
+	private static void anularReserva(ArrayList<Cliente> clientes) {
+		if (clientes.size()==0) {
+			System.out.println("No hay clientea a los que anular reservas");	
+		}
+		else {
+		String dni;
+		int nreserva,contador=0;
+		do {
+			System.out.println("Dame el dni del cliente");
+			dni=Util.introducirCadena();
+			 if (!dni.matches("\\d{8}[A-Za-z]")) {
+				 contador++;
+				 System.out.println("Formato de dni incorrecto, intentalo de nuevo");
+			 }
+			}while(contador==1);
+		for(Cliente c : clientes) {
+			if(dni.equalsIgnoreCase(c.getDni())) {
+				contador++;
+				c.listarReservas();
+				System.out.println("Introduzca el numero de reserva de la reserva que desea eliminar");
+				nreserva=Util.leerInt();
+				c.eliminarReserva(nreserva);
+			}
+		}
+		if(contador==0) {
+			System.out.println("DNI incorrecto, no se encontro el cliente");
+		}
+		}
 	}
 }
