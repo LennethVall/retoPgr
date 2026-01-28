@@ -2,6 +2,8 @@ package clases;
 
 import java.io.Serializable;
 
+import principal.DNIException;
+
 public abstract class Persona implements Serializable {
     /**
 	 * 

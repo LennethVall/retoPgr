@@ -2,6 +2,8 @@ package clases;
 
 import java.util.ArrayList;
 
+import principal.DNIException;
+
 public class Cliente extends Persona {
 
 	private int telefono;
