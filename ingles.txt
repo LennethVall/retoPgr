@@ -1,0 +1,13 @@
+===== VEHICLE RENTAL =====
+||||||||||||||||||||||||||
+Welcome to the main menu!
+
+Available options:
+1. Add customer
+2. List customers
+3. Add employee
+4. Add reservation
+5. List reservations
+6. Show customer reservations
+7. Cancel reservation
+8. Exit

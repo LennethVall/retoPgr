@@ -186,38 +186,49 @@ public class Main {
 
 	private static void guardarClientesEnFichero(ArrayList<Cliente> clientes, File fichero) {
 
-		File aux = new File("clientes.aux");
-		File backup = new File("clientes.backup");
+	    File aux = new File("clientes.aux");
+	    File backup = new File("clientes.backup");
 
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(aux))) {
+	    try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(aux))) {
 
-			// 1. Escribir en el fichero auxiliar
-			oos.writeObject(clientes);
-			oos.flush();
+	        // 1. Escribir en el auxiliar
+	        oos.writeObject(clientes);
+	        oos.flush(); // Asegura que todo está en disco
 
-			// 2. Renombrar el fichero original a backup
-			if (fichero.exists()) {
-				fichero.renameTo(backup);
-			}
+	    } catch (IOException e) {
+	        System.out.println("Error escribiendo en el fichero auxiliar: " + e.getMessage());
+	        return;
+	    }
 
-			// 3. Renombrar el auxiliar como fichero definitivo
-			if (!aux.renameTo(fichero)) {
-				System.out.println("Error al renombrar el fichero auxiliar");
-				// Intentar recuperar el backup
-				if (backup.exists()) {
-					backup.renameTo(fichero);
-				}
-			} else {
-				// 4. Si todo fue bien, borrar backup
-				if (backup.exists()) {
-					backup.delete();
-				}
-			}
+	    // 2. Borrar backup si existe (Windows lo exige)
+	    if (backup.exists()) {
+	        backup.delete();
+	    }
 
-		} catch (IOException e) {
-			System.out.println("Error al guardar clientes: " + e.getMessage());
-		}
+	    // 3. Renombrar original → backup
+	    if (fichero.exists()) {
+	        if (!fichero.renameTo(backup)) {
+	            System.out.println("No se pudo crear el backup. Abortando guardado.");
+	            return;
+	        }
+	    }
+
+	    // 4. Renombrar aux → fichero definitivo
+	    if (!aux.renameTo(fichero)) {
+	        System.out.println("Error al renombrar el fichero auxiliar. Restaurando backup...");
+
+	        // Restaurar backup
+	        if (backup.exists()) {
+	            backup.renameTo(fichero);
+	        }
+	    } else {
+	        // 5. Si todo fue bien, borrar backup
+	        if (backup.exists()) {
+	            backup.delete();
+	        }
+	    }
 	}
+
 
 	private static Cliente buscarClientePorDni(String dni, ArrayList<Cliente> clientes) {
 		for (Cliente c : clientes) {
@@ -247,96 +258,77 @@ public class Main {
 
 	public static void altaEmpleado(File ficheroEmpleados) {
 
-		// 1. Pedir el DNI del empleado
-		String dni = pedirDniValido();
+	    // 1. Cargar empleados existentes
+	    boolean ficheroTieneDatos = ficheroEmpleados.exists() && ficheroEmpleados.length() > 0;
 
-		// 2. Comprobar si el DNI ya existe en el fichero
-		boolean existe = false;
+	    // 2. Pedir DNI
+	    String dni = pedirDniValido();
 
-		try {
-			// Abrimos el fichero para leer todos los empleados uno a uno
-			if (ficheroEmpleados.exists() && ficheroEmpleados.length() > 0) {
+	    // 3. Comprobar si existe
+	    if (ficheroTieneDatos) {
+	        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ficheroEmpleados))) {
+	            while (true) {
+	                try {
+	                    Empleado e = (Empleado) ois.readObject();
+	                    if (e.getDni().equalsIgnoreCase(dni)) {
+	                        System.out.println("Ya existe un empleado con ese DNI.");
+	                        return;
+	                    }
+	                } catch (EOFException fin) {
+	                    break;
+	                }
+	            }
+	        } catch (Exception e) {
+	            System.out.println("Error leyendo empleados.");
+	        }
+	    }
 
-				FileInputStream fis = new FileInputStream(ficheroEmpleados);
-				ObjectInputStream ois = new ObjectInputStream(fis);
+	    // 4. Pedir datos
+	    System.out.println("Nombre:");
+	    String nombre = Util.introducirCadena();
 
-				while (true) {
-					try {
-						Empleado e = (Empleado) ois.readObject();
-						if (e.getDni().equalsIgnoreCase(dni)) {
-							existe = true;
-							break;
-						}
-					} catch (EOFException fin) {
-						break; // fin del fichero
-					}
-				}
+	    System.out.println("Apellido:");
+	    String apellido = Util.introducirCadena();
 
-				ois.close();
-			}
+	    System.out.println("Cargo (1-Comercial, 2-Recepcionista, 3-Mecánico):");
+	    int opcionCargo = Util.leerInt();
+	    Util.introducirCadena();
 
-		} catch (Exception e) {
-			System.out.println("Error leyendo empleados.");
-		}
+	    Cargo cargo = switch (opcionCargo) {
+	        case 1 -> Cargo.COMERCIAL;
+	        case 2 -> Cargo.RECEPCIONISTA;
+	        case 3 -> Cargo.MECANICO;
+	        default -> null;
+	    };
 
-		if (existe) {
-			System.out.println("Ya existe un empleado con ese DNI.");
-			return;
-		}
+	    if (cargo == null) {
+	        System.out.println("Cargo no válido.");
+	        return;
+	    }
 
-		// 3. Pedir el resto de datos
-		System.out.println("Nombre:");
-		String nombre = Util.introducirCadena();
+	    Empleado nuevo = new Empleado(dni, nombre, apellido, cargo);
 
-		System.out.println("Apellido:");
-		String apellido = Util.introducirCadena();
+	    // 5. Guardar usando SinCabecera si el fichero ya tenía datos
+	    try {
+	        FileOutputStream fos = new FileOutputStream(ficheroEmpleados, true); // ← aquí NO pones append tú
+	        ObjectOutputStream oos;
 
-		System.out.println("Cargo (1-Comercial, 2-Recepcionista, 3-Mecánico):");
-		int opcionCargo = Util.leerInt();
-		Util.introducirCadena(); // limpiar buffer
+	        if (ficheroTieneDatos) {
+	            oos = new SinCabeceraObjectOutputStream(fos);
+	        } else {
+	            oos = new ObjectOutputStream(fos);
+	        }
 
-		Cargo cargo = null;
+	        oos.writeObject(nuevo);
+	        oos.close();
 
-		if (opcionCargo == 1) {
-			cargo = Cargo.COMERCIAL;
-		} else if (opcionCargo == 2) {
-			cargo = Cargo.RECEPCIONISTA;
-		} else if (opcionCargo == 3) {
-			cargo = Cargo.MECANICO;
-		} else {
-			System.out.println("Cargo no válido.");
-			return;
-		}
+	        System.out.println("Empleado añadido correctamente.");
 
-		// 4. Crear el empleado
-		Empleado nuevo = new Empleado(dni, nombre, apellido, cargo);
-
-		// 5. Guardarlo al final del fichero usando append
-		try {
-
-			boolean append = ficheroEmpleados.exists() && ficheroEmpleados.length() > 0;
-
-			FileOutputStream fos = new FileOutputStream(ficheroEmpleados, true);
-
-			ObjectOutputStream oos;
-
-			if (append) {
-				// Si el fichero ya tiene datos, usamos la clase sin cabecera
-				oos = new SinCabeceraObjectOutputStream(fos);
-			} else {
-				// Si el fichero está vacío, usamos la clase normal
-				oos = new ObjectOutputStream(fos);
-			}
-
-			oos.writeObject(nuevo);
-			oos.close();
-
-			System.out.println("Empleado añadido correctamente.");
-
-		} catch (Exception e) {
-			System.out.println("Error al guardar el empleado.");
-		}
+	    } catch (Exception e) {
+	        System.out.println("Error al guardar el empleado.");
+	    }
 	}
+
 
 	private static void altaReserva(File ficheroClientes, File ficheroReservas) {
 
@@ -527,35 +519,50 @@ public class Main {
 
 	public static void guardarReservas(TreeMap<Integer, Reserva> mapa, File fichero) {
 
-		File aux = new File("reservas.aux");
-		File backup = new File("reservas.backup");
+	    File aux = new File("reservas.aux");
+	    File backup = new File("reservas.backup");
 
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(aux))) {
+	    // 1. Escribir en el fichero auxiliar
+	    try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(aux))) {
 
-			// Guardamos primero en el auxiliar
-			oos.writeObject(mapa);
-			oos.flush();
+	        oos.writeObject(mapa);
+	        oos.flush(); // Asegura que todo está escrito en disco
 
-			// Si ya existe el fichero original, lo renombramos como backup
-			if (fichero.exists()) {
-				fichero.renameTo(backup);
-			}
+	    } catch (IOException e) {
+	        System.out.println("Error escribiendo en el fichero auxiliar: " + e.getMessage());
+	        return;
+	    }
 
-			// Intentamos renombrar el auxiliar al fichero real
-			if (!aux.renameTo(fichero)) {
-				// Si falla, restauramos el backup
-				if (backup.exists())
-					backup.renameTo(fichero);
-			} else {
-				// Si todo va bien, borramos el backup
-				if (backup.exists())
-					backup.delete();
-			}
+	    // 2. Borrar backup si existe (Windows no permite sobrescribir)
+	    if (backup.exists()) {
+	        backup.delete();
+	    }
 
-		} catch (IOException e) {
-			System.out.println("Error al guardar reservas: " + e.getMessage());
-		}
+	    // 3. Renombrar original → backup
+	    if (fichero.exists()) {
+	        if (!fichero.renameTo(backup)) {
+	            System.out.println("No se pudo crear el backup. Abortando guardado.");
+	            return;
+	        }
+	    }
+
+	    // 4. Renombrar aux → fichero definitivo
+	    if (!aux.renameTo(fichero)) {
+	        System.out.println("Error al renombrar el fichero auxiliar. Restaurando backup...");
+
+	        // Restaurar backup si existe
+	        if (backup.exists()) {
+	            backup.renameTo(fichero);
+	        }
+
+	    } else {
+	        // 5. Si todo fue bien, borrar backup
+	        if (backup.exists()) {
+	            backup.delete();
+	        }
+	    }
 	}
+
 
 	public static String pedirDniValido() {
 		String dni = null;

@@ -1,50 +1,60 @@
 package clases;
 
-import java.util.TreeMap;
+import java.util.ArrayList;
 
 public class Cliente extends Persona {
+	private int telefono;
+	private transient ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 
-    private String telefono;
-    private TreeMap<Integer, Reserva> reservas = new TreeMap<>();
+	public Cliente(String dni, String nombre, String apellido, int telefono) {
+		super(dni, nombre, apellido);
+		if (!dni.matches("\\d{8}[A-Za-z]")) {
+			throw new DNIException("DNI incorrecto: " + dni);
+		}
+		this.telefono = telefono;
+	}
 
-    public Cliente(String dni, String nombre, String apellido, String telefono) {
-        super(dni, nombre, apellido); // Persona ya valida el DNI
-        this.telefono = telefono;
-    }
+	public int getTelefono() {
+		return telefono;
+	}
 
-    public String getTelefono() {
-        return telefono;
-    }
+	public void setTelefono(int telefono) {
+		this.telefono = telefono;
+	}
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
+	public void aniadirReserva(Reserva a) {
+		if (reservas == null) {
+			reservas = new ArrayList<Reserva>();
+		}
+		reservas.add(a);
+	}
 
-    public void aniadirReserva(int id, Reserva reserva) {
-        reservas.put(id, reserva);
-    }
+	public void eliminarReserva(Reserva a) {
+		if (reservas != null) {
+			reservas.remove(a);
+		}
+	}
 
-    public void eliminarReserva(int id) {
-        if (reservas.remove(id) != null) {
-            System.out.println("Reserva eliminada correctamente");
-        } else {
-            System.out.println("No existe una reserva con ese ID");
-        }
-    }
-    public TreeMap<Integer, Reserva> getReservas() {
-        return reservas;
-    }
+	public void listarReservas() {
+		if (reservas == null || reservas.size() == 0) {
+			System.out.println("No hay reservas para este cliente");
+			return;
+		}
+		for (Reserva a : reservas) {
+			System.out.println(a.toString());
+		}
+	}
 
-    public void listarReservas() {
-        for (Reserva r : reservas.values()) {
-            System.out.println(r);
-        }
-    }
+	public void limpiarReservas() {
+		if (reservas == null) {
+			reservas = new ArrayList<Reserva>();
+		} else {
+			reservas.clear();
+		}
+	}
 
-    @Override
-    public String toString() {
-        return "Cliente -> " + super.toString() +
-               ", Teléfono: " + telefono +
-               ", Nº Reservas: " + reservas.size();
-    }
+	@Override
+	public String toString() {
+		return super.toString() + " . Cliente [telefono=" + telefono + "]";
+	}
 }

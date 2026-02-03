@@ -1,4 +1,5 @@
 package clases;
+
 import java.io.*;
 public class SinCabeceraObjectOutputStream extends ObjectOutputStream{
 	
@@ -15,5 +16,3 @@ public class SinCabeceraObjectOutputStream extends ObjectOutputStream{
 		super(out);
 		}
 	}
-
-

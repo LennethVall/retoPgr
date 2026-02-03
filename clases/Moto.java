@@ -1,33 +1,23 @@
 package clases;
 
 public class Moto extends Vehiculo {
+	private int cilindrada;
 
-    private int cilindrada;
+	public Moto(String matricula, String marca, String modelo, int cilindrada) {
+		super(matricula, marca, modelo);
+		this.cilindrada = cilindrada;
+	}
 
-    public Moto(String matricula, String marca, String modelo, int cilindrada) {
-        super(matricula, marca, modelo);
+	public int getCilindrada() {
+		return cilindrada;
+	}
 
-        if (cilindrada <= 0) {
-            throw new IllegalArgumentException("La cilindrada debe ser mayor que 0");
-        }
+	public void setCilindrada(int cilindrada) {
+		this.cilindrada = cilindrada;
+	}
 
-        this.cilindrada = cilindrada;
-    }
-
-    public int getCilindrada() {
-        return cilindrada;
-    }
-
-    public void setCilindrada(int cilindrada) {
-        if (cilindrada <= 0) {
-            throw new IllegalArgumentException("La cilindrada debe ser mayor que 0");
-        }
-        this.cilindrada = cilindrada;
-    }
-
-    @Override
-    public String toString() {
-        return "Moto -> " + super.toString() +
-               ", Cilindrada: " + cilindrada + "cc";
-    }
+	@Override
+	public String toString() {
+		return super.toString() + " , Cilindrada: " + cilindrada + "cc";
+	}
 }
