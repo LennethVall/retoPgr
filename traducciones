@@ -1,0 +1,319 @@
+#CONFIRMAR_SALIDA
+¿Seguro que desea salir? (s/n)
+Are you sure you want to exit? (y/n)
+
+#PAUSAR
+Presione ENTER para continuar...
+Press ENTER to continue...
+
+#SELECCIONE_OPCION
+Seleccione opción:
+Select option:
+
+#OPCION_INVALIDA
+Opción no válida. Intente de nuevo.
+Invalid option. Try again.
+
+#INTRODUCIR_DNI
+Introduzca el DNI del cliente
+Enter the customer's ID
+
+#DNI_FORMATO_INCORRECTO
+Formato de DNI incorrecto, inténtalo de nuevo
+Incorrect ID format, try again
+
+#ALTA_CLIENTE_TITULO
+ALTA DE CLIENTE
+CLIENT REGISTRATION
+
+#CLIENTE_EXISTE
+Ya existe un cliente con ese DNI.
+A client with that ID already exists.
+
+#INTRODUCIR_NOMBRE
+Introduzca el nombre del cliente
+Enter the customer's first name
+
+#INTRODUCIR_APELLIDO
+Introduzca el apellido del cliente
+Enter the customer's last name
+
+#INTRODUCIR_TELEFONO
+Introduzca el teléfono del cliente
+Enter the customer's phone number
+
+#CLIENTE_ANADIDO
+Cliente añadido :)
+Client added :)
+
+#LISTADO_CLIENTES_TITULO
+LISTADO DE CLIENTES
+CUSTOMER LIST
+
+#NO_HAY_CLIENTES
+No hay clientes que mostrar
+There are no customers to display
+
+#TOTAL_CLIENTES
+Total de clientes:
+Total customers:
+
+#MODIFICAR_CLIENTE_TITULO
+MODIFICAR CLIENTE
+MODIFY CUSTOMER
+
+#NO_HAY_CLIENTES_MODIFICAR
+No hay clientes que modificar
+There are no customers to modify
+
+#CLIENTE_NO_ENCONTRADO
+DNI incorrecto, no se encontró el cliente
+Incorrect ID, customer not found
+
+#DATOS_ACTUALES
+Datos actuales:
+Current data:
+
+#QUE_DESEA_MODIFICAR
+¿Qué desea modificar?
+What would you like to modify?
+
+#MOD_NOMBRE
+1. Nombre
+1. First name
+
+#MOD_APELLIDO
+2. Apellido
+2. Last name
+
+#MOD_TELEFONO
+3. Teléfono
+3. Phone number
+
+#MOD_CANCELAR
+4. Cancelar
+4. Cancel
+
+#NUEVO_NOMBRE
+Nuevo nombre:
+New first name:
+
+#NUEVO_APELLIDO
+Nuevo apellido:
+New last name:
+
+#NUEVO_TELEFONO
+Nuevo teléfono:
+New phone number:
+
+#OPERACION_CANCELADA
+Operación cancelada
+Operation cancelled
+
+#CLIENTE_MODIFICADO
+Cliente modificado correctamente
+Customer successfully updated
+
+#OPCION_INVALIDA
+Opción no válida
+Invalid option
+
+#ALTA_EMPLEADO_TITULO
+ALTA DE EMPLEADO
+EMPLOYEE REGISTRATION
+
+#INTRODUCIR_DNI_EMPLEADO
+Introduce el DNI del nuevo empleado:
+Enter the new employee's ID:
+
+#EMPLEADO_EXISTE
+Ya existe un empleado con ese DNI.
+An employee with that ID already exists.
+
+#INTRODUCIR_NOMBRE_EMPLEADO
+Nombre:
+First name:
+
+#INTRODUCIR_APELLIDO_EMPLEADO
+Apellido:
+Last name:
+
+#INTRODUCIR_CARGO
+Introduce el cargo (1-Comercial / 2-Recepcionista / 3-Mecánico):
+Enter the role (1-Sales / 2-Receptionist / 3-Mechanic):
+
+#CARGO_INVALIDO
+Cargo no válido. Debe ser 1, 2 o 3.
+Invalid role. Must be 1, 2 or 3.
+
+#EMPLEADO_ANADIDO
+Empleado añadido correctamente:
+Employee added successfully:
+
+#LISTADO_EMPLEADOS_TITULO
+LISTADO DE EMPLEADOS
+EMPLOYEE LIST
+
+#NO_HAY_EMPLEADOS
+No hay empleados que mostrar
+There are no employees to display
+
+#TOTAL_EMPLEADOS
+Total de empleados:
+Total employees:
+
+#ALTA_VEHICULO_TITULO
+ALTA DE VEHICULO
+VEHICLE REGISTRATION
+
+#TIPO_VEHICULO
+Tipo de vehiculo (1-Coche / 2-Moto):
+Vehicle type (1-Car / 2-Motorbike):
+
+#TIPO_INVALIDO
+Tipo no válido.
+Invalid type.
+
+#INTRODUCIR_MATRICULA
+Matricula:
+License plate:
+
+#VEHICULO_EXISTE
+Ya existe un vehiculo con esa matricula
+A vehicle with that license plate already exists
+
+#INTRODUCIR_MARCA
+Marca:
+Brand:
+
+#INTRODUCIR_MODELO
+Modelo:
+Model:
+
+#INTRODUCIR_CILINDRADA
+Cilindrada (cc):
+Engine displacement (cc):
+
+#INTRODUCIR_PUERTAS
+Numero de puertas:
+Number of doors:
+
+#VEHICULO_ANADIDO
+Vehiculo añadido correctamente
+Vehicle added successfully
+
+#LISTADO_VEHICULOS_TITULO
+LISTADO DE VEHICULOS
+VEHICLE LIST
+
+#NO_HAY_VEHICULOS
+No hay vehiculos que mostrar
+There are no vehicles to display
+
+#TOTAL_VEHICULOS
+Total de vehiculos:
+Total vehicles:
+
+#NUEVA_RESERVA_TITULO
+NUEVA RESERVA
+NEW RESERVATION
+
+#NO_HAY_CLIENTES_RESERVA
+No hay clientes a los que añadirles reservas
+There are no customers to add reservations to
+
+#NO_HAY_VEHICULOS_RESERVA
+No hay vehiculos disponibles
+There are no vehicles available
+
+#CLIENTES_DISPONIBLES
+--- CLIENTES DISPONIBLES ---
+--- AVAILABLE CUSTOMERS ---
+
+#CLIENTE_NO_ENCONTRADO
+DNI incorrecto, no se encontro el cliente
+Incorrect ID, customer not found
+
+#INTRODUCIR_FECHA_INICIO
+¿Cuándo quiere empezar la reserva? (YYYY-MM-DD)
+When should the reservation start? (YYYY-MM-DD)
+
+#FORMATO_FECHA_INCORRECTO
+Formato incorrecto
+Incorrect format
+
+#FECHA_POSTERIOR_HOY
+La fecha debe ser posterior a hoy
+The date must be after today
+
+#INTRODUCIR_DIAS
+¿Cuántos días desea reservar?
+How many days do you want to reserve?
+
+#FECHA_FIN_CALCULADA
+Fecha fin calculada:
+Calculated end date:
+
+#NO_HAY_VEHICULOS_FECHAS
+No hay vehiculos disponibles para las fechas seleccionadas.
+No vehicles available for the selected dates.
+
+#VEHICULOS_DISPONIBLES
+--- VEHICULOS DISPONIBLES ---
+--- AVAILABLE VEHICLES ---
+
+#INTRODUCIR_MATRICULA_RESERVA
+Ingrese la matricula del vehiculo a reservar:
+Enter the license plate of the vehicle to reserve:
+
+#MATRICULA_NO_VALIDA
+La matricula ingresada no corresponde a ningun vehiculo disponible.
+The entered license plate does not match any available vehicle.
+
+#RESERVA_CREADA
+Reserva creada correctamente
+Reservation created successfully
+
+#NUMERO_RESERVA
+Su número de reserva es
+Your reservation number is
+
+#LISTADO_RESERVAS_TITULO
+LISTADO DE RESERVAS
+RESERVATION LIST
+
+#NO_HAY_RESERVAS
+No hay reservas que mostrar
+There are no reservations to display
+
+#TOTAL_RESERVAS
+Total de reservas:
+Total reservations:
+
+#RESERVAS_CLIENTE_TITULO
+RESERVAS DE CLIENTE
+CUSTOMER RESERVATIONS
+
+#NO_HAY_CLIENTES_RESERVAS
+No hay clientes de los cuales mostrar reservas
+There are no customers to show reservations for
+
+#ANULAR_RESERVA_TITULO
+ANULAR RESERVA
+CANCEL RESERVATION
+
+#NO_HAY_CLIENTES_ANULAR
+No hay clientes a los que anular reservas
+There are no customers whose reservations can be cancelled
+
+#INTRODUCIR_NUM_RESERVA
+Introduzca el numero de reserva de la reserva que desea eliminar
+Enter the reservation number you want to delete
+
+#RESERVA_NO_EXISTE
+No existe ninguna reserva con ese número
+No reservation exists with that number
+
+#RESERVA_ANULADA
+Reserva anulada correctamente
+Reservation successfully cancelled
